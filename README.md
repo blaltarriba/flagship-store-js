@@ -1,15 +1,9 @@
 # Lana Flagship Store
 
-Project to resolve Lana store challenge. Implemented with NodeJS. 
+Project to resolve [Lana store challenge](https://github.com/blaltarriba/flagship-store-js/tree/master/challenge-description). Implemented in NodeJS.
 
 
 ## Installation
-
-*Golang disclaimer*: Project should be at _$GOPATH/src/lana/_
-
-To install the project run:
-
-    make install
 
 To build the project run:
 
@@ -17,36 +11,13 @@ To build the project run:
 
 To run the container run:
 
-    make run
+    make env-start
 
 then the API will be ready at `http://localhost:3080/`
 
+To stop the container run:
 
-## Project folders
-
-    ./flagship-store
-    |-- models
-    |-- persistence
-    |-- services
-    |   |-- commands
-    |   |-- errors
-    |   └-- responses
-    |-- utils
-        └-- mocks
-
-_models_: Domain objects classes.
-
-_persistence_: Repository classes and interfaces to deal with our persistence system(local array, database or whatever)
-
-_services_: Services for each action that can be executed.
-
-_services/commands_: Objects used as a parameters of services.
-
-_services/errors_: Services response errors.
-
-_services/responses_: Application response based on service response. Used at controller layer.
-
-_utils/mocks_: Services mocks used for testing.
+    make env-stop
 
 ## Testing
 
@@ -137,4 +108,3 @@ Possible responses:
   - Code 404 with body
 
             {"message":"Checkout a_fake_checkout not found"}
-
