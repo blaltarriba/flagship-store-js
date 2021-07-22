@@ -1,4 +1,4 @@
-# Lana Flagship Store
+# Flagship Store
 
 Project to resolve [Lana store challenge](https://github.com/blaltarriba/flagship-store-js/tree/master/challenge-description). Implemented in NodeJS.
 
