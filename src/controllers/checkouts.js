@@ -1,6 +1,7 @@
 var uuid = require('uuid');
 var Checkout = require('../models/checkout')
 var ProductRepository = require('../repositories/product.repository')
+var CheckoutRepository = require('../repositories/checkout.repository')
 
 function create(request, response) {
   const { product_code } = request.body
@@ -15,6 +16,8 @@ function create(request, response) {
   }
 
   var checkout = new Checkout(uuid.v1(), [product_code]);
+  checkoutRepository = new CheckoutRepository();
+  checkoutRepository.Persist(checkout);
 
   response.status(200).json(checkout);
 }
