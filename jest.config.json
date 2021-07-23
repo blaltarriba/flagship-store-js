@@ -1,3 +1,5 @@
 {
-  "testRegex": "((\\.|/*.)(spec))\\.js?$"
+  "testRegex": "((\\.|/*.)(test))\\.js?$",
+  "detectOpenHandles": true,
+  "forceExit": true
 }

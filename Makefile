@@ -21,6 +21,8 @@ env-stop: ## Stop project containers defined in docker-compose
 
 env-recreate: env-stop build env-start
 
+env-restart: env-stop env-start
+
 bash: ## Open a bash shell in project's main container
 	docker exec -it ${CONTAINER_NAME} bash
 
