@@ -5,16 +5,16 @@ describe('Checkouts endpoint', () => {
   describe('POST checkouts', () => {
     it('should create new checkout', async () => {
       var productCode = 'PEN'
-      const body = { product_code: productCode }
-      const expectBody = {
-        id: '1234',
-        products: [productCode],
-      };
+      var body = { product_code: productCode }
+      var expectProducts = [productCode]
+      var uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
       const response = await request(app).post('/checkouts').send(body);
 
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('message', expectBody);
+      expect(response.body.message).toHaveProperty('id');
+      expect(response.body.message.id).toMatch(uuidRegex);
+      expect(response.body.message).toHaveProperty('products', expectProducts);
     });
 
     it('failed when product does not exist', async () => {

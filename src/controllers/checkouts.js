@@ -1,3 +1,5 @@
+var uuid = require('uuid');
+
 function create(request, response) {
   const { product_code } = request.body
 
@@ -14,7 +16,7 @@ function create(request, response) {
     {
       status: 'Success',
       message: {
-        id: '1234',
+        id: uuid.v1(),
         products: [product_code],
       }
     });
