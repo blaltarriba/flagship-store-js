@@ -10,7 +10,7 @@ function create(request, response) {
       });
   }
 
-  response.json(
+  response.status(200).json(
     {
       status: 'Success',
       message: {
