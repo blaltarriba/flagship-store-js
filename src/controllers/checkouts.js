@@ -1,12 +1,13 @@
 var uuid = require('uuid');
 var Checkout = require('../models/checkout')
+var ProductRepository = require('../repositories/product.repository')
 
 function create(request, response) {
   const { product_code } = request.body
 
-  products = ['PEN', 'TSHIRT', 'MUG']
+  productRepository = new ProductRepository();
 
-  if (!products.includes(product_code)) {
+  if (productRepository.searchById(product_code) == null) {
     return response.status(404).json(
       {
         message: `Product ${product_code} not found`
