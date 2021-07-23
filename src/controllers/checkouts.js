@@ -1,4 +1,5 @@
 var uuid = require('uuid');
+var Checkout = require('../models/checkout')
 
 function create(request, response) {
   const { product_code } = request.body
@@ -12,14 +13,9 @@ function create(request, response) {
       });
   }
 
-  response.status(200).json(
-    {
-      status: 'Success',
-      message: {
-        id: uuid.v1(),
-        products: [product_code],
-      }
-    });
+  var checkout = new Checkout(uuid.v1(), [product_code]);
+
+  response.status(200).json(checkout);
 }
 
 module.exports = { create };

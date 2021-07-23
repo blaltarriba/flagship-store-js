@@ -12,9 +12,9 @@ describe('Checkouts endpoint', () => {
       const response = await request(app).post('/checkouts').send(body);
 
       expect(response.status).toBe(200);
-      expect(response.body.message).toHaveProperty('id');
-      expect(response.body.message.id).toMatch(uuidRegex);
-      expect(response.body.message).toHaveProperty('products', expectProducts);
+      expect(response.body).toHaveProperty('id');
+      expect(response.body.id).toMatch(uuidRegex);
+      expect(response.body).toHaveProperty('products', expectProducts);
     });
 
     it('failed when product does not exist', async () => {
