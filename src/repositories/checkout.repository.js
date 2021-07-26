@@ -3,8 +3,12 @@ class CheckoutRepository {
       this.checkouts = new Map();
   }
 
-  Persist(checkout) {
+  persist(checkout) {
     this.checkouts.set(checkout.id, checkout);
+  }
+
+  searchById(id) {
+    return null;
   }
 }
 
