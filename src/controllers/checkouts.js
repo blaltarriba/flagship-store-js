@@ -35,16 +35,16 @@ function addProduct(request, response) {
   }
 
   checkoutRepository = new CheckoutRepository();
-  if (checkoutRepository.searchById(checkoutId) == null) {
+  checkout = checkoutRepository.searchById(checkoutId)
+  if (checkout == null) {
     return response.status(404).json(
       {
         message: `Checkout ${checkoutId} not found`
       });
   }
 
-  // var checkout = new Checkout(uuid.v1(), [product_code]);
-  // checkoutRepository = new CheckoutRepository();
-  // checkoutRepository.Persist(checkout);
+  checkout.getProducts.push(product);
+  checkoutRepository.persist(checkout);
 
   response.status(204).json();
 }

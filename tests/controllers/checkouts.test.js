@@ -1,9 +1,7 @@
 const request = require('supertest-as-promised');
 const app = require('../../src/app');
-// const checkoutRepository = require('../../src/repositories/checkout.repository');
-// const productRepository = require('../../src/repositories/product.repository');
-// const Checkout = require('../../src/models/checkout');
-// const CheckoutRepository = require('../../src/repositories/checkout.repository');
+const Checkout = require('../../src/models/checkout');
+const CheckoutRepository = require('../../src/repositories/checkout.repository');
 
 describe('Checkouts endpoint', () => {
   describe('POST checkouts', () => {
@@ -34,22 +32,21 @@ describe('Checkouts endpoint', () => {
   });
 
   describe('PATCH checkouts', () => {
-    // it('should add product to a checkout', async () => {
-    //   var productCode = 'PEN'
-    //   var body = { product: productCode }
+    it('should add product to a checkout', async () => {
+      var productCode = 'PEN'
+      var body = { product: productCode }
 
-    //   mockCheckout = new Checkout('1234', []);
+      mockCheckout = new Checkout('1234', ['MUG']);
+      const searchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout);
+      const persistSpy = jest.spyOn(CheckoutRepository.prototype, 'persist');
 
-    //   CheckoutRepository.searchById = jest.fn().mockReturnValueOnce(mockCheckout);
+      const response = await request(app).patch('/checkouts/123').send(body);
 
-    //   const originalProductSearch = productRepository.searchById;
-    //   productRepository.searchById = jest.fn(originalProductSearch);
-    //   productRepository.searchById.mockImplementation(() => null);
-
-    //   const response = await request(app).patch('/checkouts/123').send(body);
-
-    //   expect(response.status).toBe(204);
-    // });
+      expect(response.status).toBe(204);
+      expect(persistSpy).toBeCalledTimes(1);
+      searchByIdSpy.mockRestore();
+      persistSpy.mockRestore();
+    });
 
     it('failed when product does not exist', async () => {
       var productCode = 'FAKE'
