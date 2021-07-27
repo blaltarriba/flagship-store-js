@@ -8,7 +8,7 @@ class CheckoutRepository {
   }
 
   searchById(id) {
-    return null;
+    return this.checkouts.get(id);
   }
 }
 
