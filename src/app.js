@@ -16,6 +16,8 @@ app.get("/", (req, res) => {
 
 app.get('/product', products.getAll);
 app.post('/products', products.create);
+
 app.post('/checkouts', checkouts.create);
+app.patch('/checkouts/:x', checkouts.addProduct);
 
 module.exports = app;
