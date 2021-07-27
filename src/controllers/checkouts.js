@@ -49,4 +49,21 @@ function addProduct(request, response) {
   response.status(204).json();
 }
 
-module.exports = { create, addProduct };
+function remove(request, response) {
+  const checkoutId = request.params.x
+
+  checkoutRepository = new CheckoutRepository();
+  checkout = checkoutRepository.searchById(checkoutId)
+  if (checkout == null) {
+    return response.status(404).json(
+      {
+        message: `Checkout ${checkoutId} not found`
+      });
+  }
+
+  checkoutRepository.delete(checkoutId);
+
+  response.status(204).json();
+}
+
+module.exports = { create, addProduct, remove };
