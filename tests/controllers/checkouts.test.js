@@ -40,7 +40,7 @@ describe('Checkouts endpoint', () => {
       const searchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout);
       const persistSpy = jest.spyOn(CheckoutRepository.prototype, 'persist');
 
-      const response = await request(app).patch('/checkouts/123').send(body);
+      const response = await request(app).patch('/checkouts/1234').send(body);
 
       expect(response.status).toBe(204);
       expect(persistSpy).toBeCalledTimes(1);
@@ -63,6 +63,30 @@ describe('Checkouts endpoint', () => {
       var body = { product: 'PEN' }
 
       const response = await request(app).patch(`/checkouts/${checkoutId}`).send(body);
+
+      expect(response.status).toBe(404);
+      expect(response.body).toHaveProperty('message', `Checkout ${checkoutId} not found`);
+    });
+  });
+
+  describe('DELETE checkouts', () => {
+    it('should delete a checkout', async () => {
+      mockCheckout = new Checkout('1234', ['MUG']);
+      const searchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout);
+      const deleteSpy = jest.spyOn(CheckoutRepository.prototype, 'delete');
+
+      const response = await request(app).delete('/checkouts/1234');
+
+      expect(response.status).toBe(204);
+      expect(deleteSpy).toBeCalledTimes(1);
+      searchByIdSpy.mockRestore();
+      deleteSpy.mockRestore();
+    });
+
+    it('failed when checkout does not exist', async () => {
+      var checkoutId = 'a_fake_checkout'
+
+      const response = await request(app).delete(`/checkouts/${checkoutId}`);
 
       expect(response.status).toBe(404);
       expect(response.body).toHaveProperty('message', `Checkout ${checkoutId} not found`);

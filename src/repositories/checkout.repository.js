@@ -10,6 +10,10 @@ class CheckoutRepository {
   searchById(id) {
     return this.checkouts.get(id);
   }
+
+  delete(id) {
+    this.checkouts.delete(id);
+  }
 }
 
 module.exports = CheckoutRepository;
