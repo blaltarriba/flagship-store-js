@@ -35,7 +35,7 @@ To create a new checkout basket, in terminal execute:
     curl -w "%{http_code}" --location --request POST 'http://localhost:3080/checkouts' \
     --header 'Content-Type: application/json' \
     --data-raw '{
-        "product-code": "PEN"
+        "product_code": "PEN"
     }'
 
 Possible responses:

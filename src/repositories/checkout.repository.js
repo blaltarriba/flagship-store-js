@@ -1,18 +1,16 @@
-class CheckoutRepository {
-  constructor() {
-      this.checkouts = new Map();
-  }
+var checkouts = new Map();
 
+class CheckoutRepository {
   persist(checkout) {
-    this.checkouts.set(checkout.id, checkout);
+    checkouts.set(checkout.id, checkout);
   }
 
   searchById(id) {
-    return this.checkouts.get(id);
+    return checkouts.get(id);
   }
 
   delete(id) {
-    this.checkouts.delete(id);
+    checkouts.delete(id);
   }
 }
 
