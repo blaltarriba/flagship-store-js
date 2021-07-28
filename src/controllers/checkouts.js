@@ -1,6 +1,6 @@
-var CheckoutRepository = require('../repositories/checkout.repository')
 var CreateCheckoutService = require('../services/create_checkout')
 var AddProductToCheckoutService = require('../services/add_product_to_checkout')
+var DeleteCheckoutService = require('../services/delete_checkout')
 var { ProductNotFoundError, CheckoutNotFoundError } = require('../exceptions/checkouts.exceptions')
 
 function create(request, response) {
@@ -43,18 +43,19 @@ function addProduct(request, response) {
 function remove(request, response) {
   const checkoutId = request.params.x
 
-  checkoutRepository = new CheckoutRepository();
-  checkout = checkoutRepository.searchById(checkoutId)
-  if (checkout == null) {
-    return response.status(404).json(
-      {
-        message: `Checkout ${checkoutId} not found`
-      });
+  try {
+    DeleteCheckoutService.Do(checkoutId);
+    response.status(204).json();
+  } catch (err) {
+    if (err instanceof CheckoutNotFoundError) {
+      return response.status(404).json(
+        {
+          message: `Checkout ${checkoutId} not found`
+        });
+    } else {
+      throw err;
+    }
   }
-
-  checkoutRepository.delete(checkoutId);
-
-  response.status(204).json();
 }
 
 module.exports = { create, addProduct, remove };
