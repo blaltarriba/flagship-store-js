@@ -1,8 +1,4 @@
-const request = require('supertest-as-promised');
-const app = require('../../src/app');
 const CreateCheckout = require('../../src/services/create_checkout');
-const Checkout = require('../../src/models/checkout');
-const CheckoutRepository = require('../../src/repositories/checkout.repository');
 
 describe('Create checkouts', () => {
   it('should create new checkout', async () => {
