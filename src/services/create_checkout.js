@@ -1,20 +1,21 @@
 var uuid = require('uuid');
 var Checkout = require('../models/checkout')
+var Product = require('../models/product')
 var ProductRepository = require('../repositories/product.repository')
 var CheckoutRepository = require('../repositories/checkout.repository')
 
 function Do(product_code) {
-  let productRepository = new ProductRepository();
-
-  if (productRepository.searchById(product_code) == null) {
-    return null;
+  let productRepository = new ProductRepository()
+  let product = productRepository.searchById(product_code)
+  if (product == null) {
+    return null
   }
 
-  let checkout = new Checkout(uuid.v1(), [product_code]);
-  checkoutRepository = new CheckoutRepository();
-  checkoutRepository.persist(checkout);
+  let checkout = new Checkout(uuid.v1(), [product])
+  checkoutRepository = new CheckoutRepository()
+  checkoutRepository.persist(checkout)
 
-  return checkout;
+  return checkout
 }
 
-module.exports = { Do };
+module.exports = { Do }
