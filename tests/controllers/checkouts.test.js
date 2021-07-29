@@ -107,5 +107,14 @@ describe('Checkouts endpoint', () => {
       expect(response.body).toHaveProperty('amount', "5.00€")
       searchByIdSpy.mockRestore()
     })
+
+    it('failed when checkout does not exist', async () => {
+      let checkoutId = 'a_fake_checkout'
+
+      let response = await request(app).get(`/checkouts/${checkoutId}/amount`)
+
+      expect(response.status).toBe(404)
+      expect(response.body).toHaveProperty('message', `Checkout ${checkoutId} not found`)
+    })
   })
 })

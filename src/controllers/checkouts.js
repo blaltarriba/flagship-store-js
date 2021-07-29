@@ -64,12 +64,23 @@ function remove(request, response) {
 function getAmount(request, response) {
   let checkoutId = request.params.x
 
-  let amount = GetCheckoutAmountService.Do(checkoutId)
-  let formattedAmount = formatAmount(amount)
-  return response.status(200).json(
-    {
-      amount: formattedAmount
-  })
+  try {
+    let amount = GetCheckoutAmountService.Do(checkoutId)
+    let formattedAmount = formatAmount(amount)
+    return response.status(200).json(
+      {
+        amount: formattedAmount
+      })
+  } catch (err) {
+    if (err instanceof CheckoutNotFoundError) {
+      return response.status(404).json(
+        {
+          message: `Checkout ${checkoutId} not found`
+        })
+    } else {
+      throw err
+    }
+  }
 }
 
 function formatAmount(amount) {
