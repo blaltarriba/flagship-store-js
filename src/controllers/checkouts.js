@@ -1,12 +1,13 @@
 var CreateCheckoutService = require('../services/create_checkout')
 var AddProductToCheckoutService = require('../services/add_product_to_checkout')
 var DeleteCheckoutService = require('../services/delete_checkout')
+var GetCheckoutAmountService = require('../services/get_checkout_amount')
 var { ProductNotFoundError, CheckoutNotFoundError } = require('../exceptions/checkouts.exceptions')
 
 function create(request, response) {
-  const { product_code } = request.body
+  let { product_code } = request.body
 
-  checkout = CreateCheckoutService.Do(product_code)
+  let checkout = CreateCheckoutService.Do(product_code)
   if (checkout == null) {
     return response.status(404).json(
       {
@@ -17,8 +18,8 @@ function create(request, response) {
 }
 
 function addProduct(request, response) {
-  const { product } = request.body
-  const checkoutId = request.params.x
+  let { product } = request.body
+  let checkoutId = request.params.x
 
   try {
     AddProductToCheckoutService.Do(product, checkoutId);
@@ -41,7 +42,7 @@ function addProduct(request, response) {
 }
 
 function remove(request, response) {
-  const checkoutId = request.params.x
+  let checkoutId = request.params.x
 
   try {
     DeleteCheckoutService.Do(checkoutId);
@@ -58,4 +59,14 @@ function remove(request, response) {
   }
 }
 
-module.exports = { create, addProduct, remove };
+function getAmount(request, response) {
+  let checkoutId = request.params.x
+
+  let amount = GetCheckoutAmountService.Do(checkoutId);
+  return response.status(200).json(
+    {
+      amount: amount
+  });
+}
+
+module.exports = { create, addProduct, remove, getAmount };

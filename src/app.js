@@ -20,5 +20,6 @@ app.post('/products', products.create);
 app.post('/checkouts', checkouts.create);
 app.patch('/checkouts/:x', checkouts.addProduct);
 app.delete('/checkouts/:x', checkouts.remove);
+app.get('/checkouts/:x/amount', checkouts.getAmount);
 
 module.exports = app;

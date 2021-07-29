@@ -3,13 +3,13 @@ var CheckoutRepository = require('../repositories/checkout.repository')
 var { ProductNotFoundError, CheckoutNotFoundError } = require('../exceptions/checkouts.exceptions')
 
 function Do(product, checkoutId) {
-  productRepository = new ProductRepository();
+  let productRepository = new ProductRepository();
   if (productRepository.searchById(product) == null) {
     throw new ProductNotFoundError("");
   }
 
-  checkoutRepository = new CheckoutRepository();
-  checkout = checkoutRepository.searchById(checkoutId)
+  let checkoutRepository = new CheckoutRepository();
+  let checkout = checkoutRepository.searchById(checkoutId)
   if (checkout == null) {
     throw new CheckoutNotFoundError("");
   }

@@ -4,13 +4,13 @@ var ProductRepository = require('../repositories/product.repository')
 var CheckoutRepository = require('../repositories/checkout.repository')
 
 function Do(product_code) {
-  productRepository = new ProductRepository();
+  let productRepository = new ProductRepository();
 
   if (productRepository.searchById(product_code) == null) {
     return null;
   }
 
-  var checkout = new Checkout(uuid.v1(), [product_code]);
+  let checkout = new Checkout(uuid.v1(), [product_code]);
   checkoutRepository = new CheckoutRepository();
   checkoutRepository.persist(checkout);
 

@@ -5,12 +5,12 @@ var { ProductNotFoundError, CheckoutNotFoundError } = require('../../src/excepti
 
 describe('Add product to a checkout', () => {
   it('should add product to a checkout', async () => {
-    var productCode = 'PEN'
-    var checkoutId = '1234'
+    let productCode = 'PEN'
+    let checkoutId = '1234'
 
     mockCheckout = new Checkout(checkoutId, ['MUG']);
-    const searchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout);
-    const persistSpy = jest.spyOn(CheckoutRepository.prototype, 'persist');
+    let searchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout);
+    let persistSpy = jest.spyOn(CheckoutRepository.prototype, 'persist');
 
     AddProductToCheckout.Do(productCode,checkoutId);
 
@@ -20,15 +20,15 @@ describe('Add product to a checkout', () => {
   });
 
   it('failed when product does not exist', async () => {
-    var checkoutId = '1234'
-    var productCode = 'FAKE'
+    let checkoutId = '1234'
+    let productCode = 'FAKE'
 
     expect(() => {AddProductToCheckout.Do(productCode,checkoutId)}).toThrow(ProductNotFoundError);
   });
 
   it('failed when checkout does not exist', async () => {
-    var checkoutId = 'a_fake_checkout'
-    var productCode = 'PEN'
+    let checkoutId = 'a_fake_checkout'
+    let productCode = 'PEN'
 
     expect(() => {AddProductToCheckout.Do(productCode,checkoutId)}).toThrow(CheckoutNotFoundError);
   });
