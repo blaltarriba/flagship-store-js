@@ -2,9 +2,10 @@ var ProductRepository = require('../repositories/product.repository')
 var CheckoutRepository = require('../repositories/checkout.repository')
 var { ProductNotFoundError, CheckoutNotFoundError } = require('../exceptions/checkouts.exceptions')
 
-function Do(product, checkoutId) {
+function Do(productCode, checkoutId) {
   let productRepository = new ProductRepository();
-  if (productRepository.searchById(product) == null) {
+  let product = productRepository.searchById(productCode);
+  if (product == null) {
     throw new ProductNotFoundError("");
   }
 

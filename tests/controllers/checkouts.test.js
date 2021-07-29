@@ -96,7 +96,7 @@ describe('Checkouts endpoint', () => {
 
   describe('GET checkout amount', () => {
     it('return checkout amount', async () => {
-      let product = new Product('MUG', 'Coffee Mug', 500)
+      let product = new Product('MUG', 'Coffee Mug', 500);
       let mockCheckout = new Checkout('1234', [product]);
       let searchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout);
 

@@ -1,4 +1,5 @@
 const Checkout = require('../../src/models/checkout');
+const Product = require('../../src/models/product');
 const CheckoutRepository = require('../../src/repositories/checkout.repository');
 const AddProductToCheckout = require('../../src/services/add_product_to_checkout');
 var { ProductNotFoundError, CheckoutNotFoundError } = require('../../src/exceptions/checkouts.exceptions')
@@ -6,9 +7,10 @@ var { ProductNotFoundError, CheckoutNotFoundError } = require('../../src/excepti
 describe('Add product to a checkout', () => {
   it('should add product to a checkout', async () => {
     let productCode = 'PEN'
+    let product = new Product(productCode, 'Pencil', 500);
     let checkoutId = '1234'
 
-    mockCheckout = new Checkout(checkoutId, ['MUG']);
+    mockCheckout = new Checkout(checkoutId, [product]);
     let searchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout);
     let persistSpy = jest.spyOn(CheckoutRepository.prototype, 'persist');
 
