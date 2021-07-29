@@ -1,7 +1,7 @@
 class Checkout {
   constructor(id, products) {
-      this.id = id;
-      this.products = products;
+      this.id = id
+      this.products = products
   }
 
   get getId() {
@@ -13,4 +13,4 @@ class Checkout {
   }
 }
 
-module.exports = Checkout;
+module.exports = Checkout

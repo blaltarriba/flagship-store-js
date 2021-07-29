@@ -1,6 +1,5 @@
 var uuid = require('uuid');
 var Checkout = require('../models/checkout')
-var Product = require('../models/product')
 var ProductRepository = require('../repositories/product.repository')
 var CheckoutRepository = require('../repositories/checkout.repository')
 

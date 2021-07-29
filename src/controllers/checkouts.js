@@ -12,9 +12,9 @@ function create(request, response) {
     return response.status(404).json(
       {
         message: `Product ${product_code} not found`
-      });
+      })
   }
-  response.status(200).json(checkout);
+  response.status(200).json(checkout)
 }
 
 function addProduct(request, response) {
@@ -22,21 +22,21 @@ function addProduct(request, response) {
   let checkoutId = request.params.x
 
   try {
-    AddProductToCheckoutService.Do(product, checkoutId);
-    response.status(204).json();
+    AddProductToCheckoutService.Do(product, checkoutId)
+    response.status(204).json()
   } catch (err) {
     if (err instanceof ProductNotFoundError) {
       return response.status(422).json(
         {
           message: `Product ${product} not found`
-        });
+        })
     } else if (err instanceof CheckoutNotFoundError) {
       return response.status(404).json(
         {
           message: `Checkout ${checkoutId} not found`
-        });
+        })
     } else {
-      throw err;
+      throw err
     }
   }
 }
@@ -45,16 +45,16 @@ function remove(request, response) {
   let checkoutId = request.params.x
 
   try {
-    DeleteCheckoutService.Do(checkoutId);
-    response.status(204).json();
+    DeleteCheckoutService.Do(checkoutId)
+    response.status(204).json()
   } catch (err) {
     if (err instanceof CheckoutNotFoundError) {
       return response.status(404).json(
         {
           message: `Checkout ${checkoutId} not found`
-        });
+        })
     } else {
-      throw err;
+      throw err
     }
   }
 }
@@ -62,11 +62,11 @@ function remove(request, response) {
 function getAmount(request, response) {
   let checkoutId = request.params.x
 
-  let amount = GetCheckoutAmountService.Do(checkoutId);
+  let amount = GetCheckoutAmountService.Do(checkoutId)
   return response.status(200).json(
     {
       amount: amount
-  });
+  })
 }
 
-module.exports = { create, addProduct, remove, getAmount };
+module.exports = { create, addProduct, remove, getAmount }
