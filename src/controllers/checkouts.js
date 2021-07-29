@@ -3,6 +3,8 @@ var AddProductToCheckoutService = require('../services/add_product_to_checkout')
 var DeleteCheckoutService = require('../services/delete_checkout')
 var GetCheckoutAmountService = require('../services/get_checkout_amount')
 var { ProductNotFoundError, CheckoutNotFoundError } = require('../exceptions/checkouts.exceptions')
+const NUMBER_OF_DECIMALES = 2
+const EURO_SYMBOL = '€'
 
 function create(request, response) {
   let { product_code } = request.body
@@ -63,10 +65,16 @@ function getAmount(request, response) {
   let checkoutId = request.params.x
 
   let amount = GetCheckoutAmountService.Do(checkoutId)
+  let formattedAmount = formatAmount(amount)
   return response.status(200).json(
     {
-      amount: amount
+      amount: formattedAmount
   })
+}
+
+function formatAmount(amount) {
+  let formattedAmount = amount/100
+  return `${formattedAmount.toFixed(NUMBER_OF_DECIMALES)}${EURO_SYMBOL}`
 }
 
 module.exports = { create, addProduct, remove, getAmount }

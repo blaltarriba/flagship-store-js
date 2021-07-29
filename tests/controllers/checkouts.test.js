@@ -104,7 +104,7 @@ describe('Checkouts endpoint', () => {
       let response = await request(app).get('/checkouts/1234/amount')
 
       expect(response.status).toBe(200)
-      expect(response.body).toHaveProperty('amount', "2.00€")
+      expect(response.body).toHaveProperty('amount', "5.00€")
       searchByIdSpy.mockRestore()
     })
   })

@@ -12,7 +12,6 @@ function Do(checkoutId) {
     amount += element.getPrice
   })
 
-
   return amount
 }
 
