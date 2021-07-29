@@ -1,6 +1,7 @@
 const request = require('supertest-as-promised');
 const app = require('../../src/app');
 const Checkout = require('../../src/models/checkout');
+const Product = require('../../src/models/product');
 const CheckoutRepository = require('../../src/repositories/checkout.repository');
 
 describe('Checkouts endpoint', () => {
@@ -90,6 +91,20 @@ describe('Checkouts endpoint', () => {
 
       expect(response.status).toBe(404);
       expect(response.body).toHaveProperty('message', `Checkout ${checkoutId} not found`);
+    });
+  });
+
+  describe('GET checkout amount', () => {
+    it.only('return checkout amount', async () => {
+      let product = new Product('MUG', 'hhh', 500)
+      let mockCheckout = new Checkout('1234', [product]);
+      const searchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout);
+
+      const response = await request(app).get('/checkouts/1234/amount');
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('amount', "2.00€")
+      searchByIdSpy.mockRestore();
     });
   });
 });
