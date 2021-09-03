@@ -1,4 +1,5 @@
 var CheckoutRepository = require('../repositories/checkout.repository')
+var ProductRepository = require('../repositories/product.repository')
 var { CheckoutNotFoundError } = require('../exceptions/checkouts.exceptions')
 
 function Do(checkoutId) {
@@ -8,12 +9,55 @@ function Do(checkoutId) {
     throw new CheckoutNotFoundError("")
   }
 
+  let productRealUnits = calculateRealProductUnits(checkout)
+  let productUnits = calculatePayableProductUnits(productRealUnits)
+
+  let productRepository = new ProductRepository()
   let amount = 0
-  checkout.getProducts.forEach(element => {
-    amount += element.getPrice
+  productUnits.forEach((quantity, productCode) => {
+    let product = productRepository.searchById(productCode)
+    amount += (product.getPrice * quantity)
   })
 
   return amount
+}
+
+function calculateRealProductUnits(checkout) {
+  let productUnits = new Map()
+
+  checkout.getProducts.forEach(currentProduct => {
+    if (!productUnits.has(currentProduct.getCode)) {
+      productUnits.set(currentProduct.getCode, 1)
+      return
+    }
+    let currentProductCount = productUnits.get(currentProduct.getCode)
+    productUnits.delete(currentProduct.getCode)
+    productUnits.set(currentProduct.getCode, currentProductCount+1)
+  })
+
+  return productUnits
+}
+
+function calculatePayableProductUnits(productRealUnits) {
+  let productUnits = new Map()
+
+  productRealUnits.forEach((quantity, productCode) => {
+    if (productCode == "PEN") {
+      let payableQuantity = calculatePayableUnitsApplying2X1Promotion(quantity)
+      productUnits.set(productCode, payableQuantity)
+      return
+    }
+    productUnits.set(productCode, quantity)
+  })
+
+  return productUnits
+}
+
+function calculatePayableUnitsApplying2X1Promotion(quantity) {
+	if (quantity%2 == 0) {
+		return quantity / 2
+	}
+	return ((quantity - 1) / 2) + 1
 }
 
 module.exports = { Do }

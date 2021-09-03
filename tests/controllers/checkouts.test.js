@@ -97,14 +97,14 @@ describe('Checkouts endpoint', () => {
 
   describe('GET checkout amount', () => {
     it('return checkout amount', async () => {
-      let product = new Product('MUG', 'Coffee Mug', 500)
+      let product = new Product('MUG', 'Coffee Mug', 750)
       let mockCheckout = new Checkout('1234', [product])
       let searchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout)
 
       let response = await request(app).get('/checkouts/1234/amount')
 
       expect(response.status).toBe(200)
-      expect(response.body).toHaveProperty('amount', "5.00€")
+      expect(response.body).toHaveProperty('amount', "7.50€")
       searchByIdSpy.mockRestore()
     })
 
