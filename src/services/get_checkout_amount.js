@@ -9,10 +9,10 @@ function Do(checkoutId) {
     throw new CheckoutNotFoundError("")
   }
 
-  let productRealUnits = calculateRealProductUnits(checkout)
-  let productUnits = calculatePayableProductUnits(productRealUnits)
-
   let productRepository = new ProductRepository()
+  let productRealUnits = calculateRealProductUnits(checkout)
+  let productUnits = calculatePayableProductUnits(productRealUnits, productRepository)
+
   let amount = 0
   productUnits.forEach((quantity, productCode) => {
     let product = productRepository.searchById(productCode)
@@ -38,11 +38,12 @@ function calculateRealProductUnits(checkout) {
   return productUnits
 }
 
-function calculatePayableProductUnits(productRealUnits) {
+function calculatePayableProductUnits(productRealUnits, productRepository) {
   let productUnits = new Map()
 
   productRealUnits.forEach((quantity, productCode) => {
-    if (productCode == "PEN") {
+    let product = productRepository.search2x1PromotionById(productCode)
+    if (product == null) {
       let payableQuantity = calculatePayableUnitsApplying2X1Promotion(quantity)
       productUnits.set(productCode, payableQuantity)
       return

@@ -7,11 +7,22 @@ const MUG = new Product("MUG", "Lana Coffee Mug", 750)
 class ProductRepository {
   constructor() {
       this.products = [PEN, TSHIRT, MUG]
+      this.productsWith2x1Promotion = [PEN]
   }
 
   searchById(id) {
     for (let position in this.products) {
       let product = this.products[position]
+      if (id == product.code) {
+        return product
+      }
+    }
+    return null
+  }
+
+  search2x1PromotionById(id) {
+    for (let position in this.productsWith2x1Promotion) {
+      let product = this.productsWith2x1Promotion[position]
       if (id == product.code) {
         return product
       }
