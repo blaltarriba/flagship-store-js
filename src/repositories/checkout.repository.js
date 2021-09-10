@@ -9,8 +9,8 @@ class CheckoutRepository {
     return checkouts.get(id)
   }
 
-  delete(id) {
-    checkouts.delete(id)
+  delete(checkout) {
+    checkouts.delete(checkout.id)
   }
 }
 

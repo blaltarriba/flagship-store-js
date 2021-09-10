@@ -3,7 +3,7 @@ const app = require('../../src/app')
 const Checkout = require('../../src/models/checkout')
 const CheckoutRepository = require('../../src/repositories/checkout.repository')
 const DeleteCheckout = require('../../src/services/delete_checkout')
-const { ProductNotFoundError, CheckoutNotFoundError } = require('../../src/exceptions/checkouts.exceptions')
+const CheckoutNotFoundError = require('../../src/exceptions/checkouts.exceptions')
 
 describe('Delete checkouts', () => {
   it('should delete a checkout', async () => {
