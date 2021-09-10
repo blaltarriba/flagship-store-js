@@ -6,13 +6,13 @@ function Do(productCode, checkoutId) {
   let productRepository = new ProductRepository()
   let product = productRepository.searchById(productCode)
   if (product == null) {
-    throw new ProductNotFoundError("Product " + productCode + " not found")
+    throw new ProductNotFoundError(productCode)
   }
 
   let checkoutRepository = new CheckoutRepository()
   let checkout = checkoutRepository.searchById(checkoutId)
   if (checkout == null) {
-    throw new CheckoutNotFoundError("Checkout " + checkoutId + " not found")
+    throw new CheckoutNotFoundError(checkoutId)
   }
 
   checkout.getProducts.push(product)
