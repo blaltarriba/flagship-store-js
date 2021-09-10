@@ -11,6 +11,10 @@ class ProductRepository {
       this.productsWithDiscount = [MUG]
   }
 
+  getAll() {
+    return this.products
+  }
+
   searchById(id) {
     for (let position in this.products) {
       let product = this.products[position]
