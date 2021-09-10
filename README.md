@@ -108,3 +108,49 @@ Possible responses:
   - Code 404 with body
 
             {"message":"Checkout a_fake_checkout not found"}
+
+
+### Get all products
+
+To get all products, in terminal execute:
+
+    curl -w "%{http_code}" --location --request GET 'http://localhost:3080/products'
+
+Possible responses:
+- Success: Code 200 with body
+
+    {"products": [
+        {
+            "Code": "PEN",
+            "Name": "Pencil",
+            "Price": 500
+        },
+        {
+            "Code": "MUG",
+            "Name": "Mug",
+            "Price": 750
+        }
+    ]}
+
+### Get product by id
+
+To get a product by id, in terminal execute:
+
+    curl -w "%{http_code}" --location --request GET 'http://localhost:3080/products/PEN'
+
+Possible responses:
+- Success: Code 200 with body
+
+    {"products":
+        {
+            "Code": "PEN",
+            "Name": "Pencil",
+            "Price": 500
+        }
+    }
+
+- Failed:
+
+  - Code 404 with body
+
+            {"message":"Product a_fake_product not found"}
