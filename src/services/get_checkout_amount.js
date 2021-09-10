@@ -10,6 +10,11 @@ function Do(checkoutId) {
   }
 
   let productRepository = new ProductRepository()
+  let amount = calculateCheckoutAmount(productRepository, checkout)
+  return amount
+}
+
+function calculateCheckoutAmount(productRepository, checkout) {
   let productRealUnits = calculateRealProductUnits(checkout)
   let productUnits = calculatePayableProductUnits(productRealUnits, productRepository)
 
