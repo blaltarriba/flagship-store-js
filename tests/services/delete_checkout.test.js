@@ -3,7 +3,6 @@ const app = require('../../src/app')
 const Checkout = require('../../src/models/checkout')
 const CheckoutRepository = require('../../src/repositories/checkout.repository')
 const DeleteCheckout = require('../../src/services/delete_checkout')
-const CheckoutNotFoundError = require('../../src/exceptions/checkouts.exceptions')
 
 describe('Delete checkouts', () => {
   it('should delete a checkout', async () => {
@@ -22,6 +21,6 @@ describe('Delete checkouts', () => {
   it('failed when checkout does not exist', async () => {
     let checkoutId = 'a_fake_checkout'
 
-    expect(() => {DeleteCheckout.Do(checkoutId)}).toThrow(CheckoutNotFoundError)
+    expect(() => {DeleteCheckout.Do(checkoutId)}).toThrow("Checkout " + checkoutId + " not found")
   })
 })

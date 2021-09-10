@@ -3,7 +3,6 @@ const Product = require('../../src/models/product')
 const CheckoutRepository = require('../../src/repositories/checkout.repository')
 const ProductRepository = require('../../src/repositories/product.repository')
 const GetCheckoutAmount = require('../../src/services/get_checkout_amount')
-var { CheckoutNotFoundError } = require('../../src/exceptions/checkouts.exceptions')
 
 describe('Get checkout amount', () => {
   it('should return checkout amount', async () => {
@@ -27,7 +26,7 @@ describe('Get checkout amount', () => {
   it('failed when checkout does not exist', async () => {
     let checkoutId = 'a_fake_checkout'
 
-    expect(() => {GetCheckoutAmount.Do(checkoutId)}).toThrow(CheckoutNotFoundError)
+    expect(() => {GetCheckoutAmount.Do(checkoutId)}).toThrow("Checkout " + checkoutId + " not found")
   })
 
   it('Checkout amount with 2x1 promotion when checkout contains 2 of the same product with promotion', async () => {

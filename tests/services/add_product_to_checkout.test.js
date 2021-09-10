@@ -2,7 +2,6 @@ const Checkout = require('../../src/models/checkout')
 const Product = require('../../src/models/product')
 const CheckoutRepository = require('../../src/repositories/checkout.repository')
 const AddProductToCheckout = require('../../src/services/add_product_to_checkout')
-var { ProductNotFoundError, CheckoutNotFoundError } = require('../../src/exceptions/checkouts.exceptions')
 
 describe('Add product to a checkout', () => {
   it('should add product to a checkout', async () => {
@@ -25,13 +24,13 @@ describe('Add product to a checkout', () => {
     let checkoutId = '1234'
     let productCode = 'FAKE'
 
-    expect(() => {AddProductToCheckout.Do(productCode,checkoutId)}).toThrow(ProductNotFoundError)
+    expect(() => {AddProductToCheckout.Do(productCode,checkoutId)}).toThrow("Product " + productCode + " not found")
   })
 
   it('failed when checkout does not exist', async () => {
     let checkoutId = 'a_fake_checkout'
     let productCode = 'PEN'
 
-    expect(() => {AddProductToCheckout.Do(productCode,checkoutId)}).toThrow(CheckoutNotFoundError)
+    expect(() => {AddProductToCheckout.Do(productCode,checkoutId)}).toThrow("Checkout " + checkoutId + " not found")
   })
 })

@@ -5,7 +5,7 @@ function Do(checkoutId) {
   let checkoutRepository = new CheckoutRepository()
   let checkout = checkoutRepository.searchById(checkoutId)
   if (checkout == null) {
-    throw new CheckoutNotFoundError("")
+    throw new CheckoutNotFoundError("Checkout " + checkoutId + " not found")
   }
 
   checkoutRepository.delete(checkout)
