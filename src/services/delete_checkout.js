@@ -2,15 +2,15 @@ var CheckoutRepository = require('../repositories/checkout.repository')
 var { CheckoutNotFoundError } = require('../exceptions/checkouts.exceptions')
 
 function Do(checkoutId) {
-  checkoutRepository = new CheckoutRepository();
-  checkout = checkoutRepository.searchById(checkoutId)
+  let checkoutRepository = new CheckoutRepository()
+  let checkout = checkoutRepository.searchById(checkoutId)
   if (checkout == null) {
-    throw new CheckoutNotFoundError("");
+    throw new CheckoutNotFoundError("Checkout " + checkoutId + " not found")
   }
 
-  checkoutRepository.delete(checkout);
+  checkoutRepository.delete(checkout)
 
-  return checkout;
+  return checkout
 }
 
-module.exports = { Do };
+module.exports = { Do }

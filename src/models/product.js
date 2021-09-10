@@ -1,8 +1,8 @@
 class Product {
   constructor(code, name, price) {
-      this.code = code;
-      this.name = name;
-      this.price = price;
+      this.code = code
+      this.name = name
+      this.price = price
   }
 
   get getCode() {
@@ -18,4 +18,4 @@ class Product {
   }
 }
 
-module.exports = Product;
+module.exports = Product

@@ -1,61 +1,91 @@
 var CreateCheckoutService = require('../services/create_checkout')
 var AddProductToCheckoutService = require('../services/add_product_to_checkout')
 var DeleteCheckoutService = require('../services/delete_checkout')
+var GetCheckoutAmountService = require('../services/get_checkout_amount')
 var { ProductNotFoundError, CheckoutNotFoundError } = require('../exceptions/checkouts.exceptions')
+const NUMBER_OF_DECIMALES = 2
+const EURO_SYMBOL = '€'
 
 function create(request, response) {
-  const { product_code } = request.body
+  let { product_code } = request.body
 
-  checkout = CreateCheckoutService.Do(product_code)
+  let checkout = CreateCheckoutService.Do(product_code)
   if (checkout == null) {
     return response.status(404).json(
       {
         message: `Product ${product_code} not found`
-      });
+      })
   }
-  response.status(200).json(checkout);
+  response.status(200).json(checkout)
 }
 
 function addProduct(request, response) {
-  const { product } = request.body
-  const checkoutId = request.params.x
+  let { product } = request.body
+  let checkoutId = request.params.x
 
   try {
-    AddProductToCheckoutService.Do(product, checkoutId);
-    response.status(204).json();
+    AddProductToCheckoutService.Do(product, checkoutId)
+    response.status(204).json()
   } catch (err) {
     if (err instanceof ProductNotFoundError) {
       return response.status(422).json(
         {
           message: `Product ${product} not found`
-        });
+        })
     } else if (err instanceof CheckoutNotFoundError) {
       return response.status(404).json(
         {
           message: `Checkout ${checkoutId} not found`
-        });
+        })
     } else {
-      throw err;
+      throw err
     }
   }
 }
 
 function remove(request, response) {
-  const checkoutId = request.params.x
+  let checkoutId = request.params.x
 
   try {
-    DeleteCheckoutService.Do(checkoutId);
-    response.status(204).json();
+    DeleteCheckoutService.Do(checkoutId)
+    response.status(204).json()
   } catch (err) {
     if (err instanceof CheckoutNotFoundError) {
       return response.status(404).json(
         {
           message: `Checkout ${checkoutId} not found`
-        });
+        })
     } else {
-      throw err;
+      throw err
     }
   }
 }
 
-module.exports = { create, addProduct, remove };
+function getAmount(request, response) {
+  let checkoutId = request.params.x
+
+  try {
+    let amount = GetCheckoutAmountService.Do(checkoutId)
+    let formattedAmount = formatAmount(amount)
+    return response.status(200).json(
+      {
+        amount: formattedAmount
+      })
+  } catch (err) {
+    if (err instanceof CheckoutNotFoundError) {
+      return response.status(404).json(
+        {
+          message: `Checkout ${checkoutId} not found`
+        })
+    } else {
+      throw err
+    }
+  }
+}
+
+function formatAmount(amount) {
+  let formattedAmount = amount/100
+  return `${formattedAmount.toFixed(NUMBER_OF_DECIMALES)}${EURO_SYMBOL}`
+}
+
+module.exports = { create, addProduct, remove, getAmount }
