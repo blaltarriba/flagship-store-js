@@ -8,6 +8,7 @@ class ProductRepository {
   constructor() {
       this.products = [PEN, TSHIRT, MUG]
       this.productsWith2x1Promotion = [PEN]
+      this.productsWithDiscount = [MUG]
   }
 
   searchById(id) {
@@ -23,6 +24,16 @@ class ProductRepository {
   search2x1PromotionById(id) {
     for (let position in this.productsWith2x1Promotion) {
       let product = this.productsWith2x1Promotion[position]
+      if (id == product.code) {
+        return product
+      }
+    }
+    return null
+  }
+
+  searchDiscountById(id) {
+    for (let position in this.productsWithDiscount) {
+      let product = this.productsWithDiscount[position]
       if (id == product.code) {
         return product
       }

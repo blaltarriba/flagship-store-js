@@ -16,6 +16,12 @@ function Do(checkoutId) {
   let amount = 0
   productUnits.forEach((quantity, productCode) => {
     let product = productRepository.searchById(productCode)
+    let productWithDiscount = productRepository.searchDiscountById(productCode)
+    if (productWithDiscount != null) {
+      amount += calculateAmountWithDiscount(quantity, product.getPrice)
+      return
+    }
+
     amount += (product.getPrice * quantity)
   })
 
@@ -43,7 +49,7 @@ function calculatePayableProductUnits(productRealUnits, productRepository) {
 
   productRealUnits.forEach((quantity, productCode) => {
     let product = productRepository.search2x1PromotionById(productCode)
-    if (product == null) {
+    if (product != null) {
       let payableQuantity = calculatePayableUnitsApplying2X1Promotion(quantity)
       productUnits.set(productCode, payableQuantity)
       return
@@ -59,6 +65,14 @@ function calculatePayableUnitsApplying2X1Promotion(quantity) {
 		return quantity / 2
 	}
 	return ((quantity - 1) / 2) + 1
+}
+
+function calculateAmountWithDiscount(quantity, price) {
+	if (quantity < 3) {
+		return price * quantity
+	}
+	let unitPriceWithDiscount = (price * 75) / 100
+	return Math.trunc(unitPriceWithDiscount) * quantity
 }
 
 module.exports = { Do }

@@ -1,6 +1,7 @@
 const Checkout = require('../../src/models/checkout')
 const Product = require('../../src/models/product')
 const CheckoutRepository = require('../../src/repositories/checkout.repository')
+const ProductRepository = require('../../src/repositories/product.repository')
 const GetCheckoutAmount = require('../../src/services/get_checkout_amount')
 var { CheckoutNotFoundError } = require('../../src/exceptions/checkouts.exceptions')
 
@@ -11,12 +12,16 @@ describe('Get checkout amount', () => {
     let checkoutId = '1234'
 
     let mockCheckout = new Checkout(checkoutId, [product1, product2])
-    let searchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout)
+    let checkoutsSearchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout)
+    let productSearch2x1PromotionById = jest.spyOn(ProductRepository.prototype, 'search2x1PromotionById').mockReturnValueOnce(null)
+    let productSearchDiscountById = jest.spyOn(ProductRepository.prototype, 'searchDiscountById').mockReturnValueOnce(null)
 
     let amount = GetCheckoutAmount.Do(checkoutId)
 
     expect(amount).toBe(1250)
-    searchByIdSpy.mockRestore()
+    checkoutsSearchByIdSpy.mockRestore()
+    productSearch2x1PromotionById.mockRestore()
+    productSearchDiscountById.mockRestore()
   })
 
   it('failed when checkout does not exist', async () => {
@@ -31,12 +36,16 @@ describe('Get checkout amount', () => {
     let checkoutId = '1234'
 
     let mockCheckout = new Checkout(checkoutId, [productPen, productPen, productMug])
-    let searchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout)
+    let checkoutsSearchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout)
+    let productSearch2x1PromotionById = jest.spyOn(ProductRepository.prototype, 'search2x1PromotionById').mockReturnValueOnce(productPen)
+    let productSearchDiscountById = jest.spyOn(ProductRepository.prototype, 'searchDiscountById').mockReturnValueOnce(null)
 
     let amount = GetCheckoutAmount.Do(checkoutId)
 
     expect(amount).toBe(1250)
-    searchByIdSpy.mockRestore()
+    checkoutsSearchByIdSpy.mockRestore()
+    productSearch2x1PromotionById.mockRestore()
+    productSearchDiscountById.mockRestore()
   })
 
   it('Checkout amount with 2x1 promotion when checkout contains 3 of the same product with promotion', async () => {
@@ -44,11 +53,66 @@ describe('Get checkout amount', () => {
     let checkoutId = '1234'
 
     let mockCheckout = new Checkout(checkoutId, [productPen, productPen, productPen])
-    let searchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout)
+    let checkoutsSearchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout)
+    let productSearch2x1PromotionById = jest.spyOn(ProductRepository.prototype, 'search2x1PromotionById').mockReturnValueOnce(productPen)
+    let productSearchDiscountById = jest.spyOn(ProductRepository.prototype, 'searchDiscountById').mockReturnValueOnce(null)
 
     let amount = GetCheckoutAmount.Do(checkoutId)
 
     expect(amount).toBe(1000)
-    searchByIdSpy.mockRestore()
+    checkoutsSearchByIdSpy.mockRestore()
+    productSearch2x1PromotionById.mockRestore()
+    productSearchDiscountById.mockRestore()
+  })
+
+  it('Checkout amount with discount when checkout contains 3 of the same product with discount', async () => {
+    let productMug = new Product('MUG', 'Mug', 750)
+    let checkoutId = '1234'
+
+    let mockCheckout = new Checkout(checkoutId, [productMug, productMug, productMug])
+    let checkoutsSearchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout)
+    let productSearch2x1PromotionById = jest.spyOn(ProductRepository.prototype, 'search2x1PromotionById').mockReturnValueOnce(null)
+    let productSearchDiscountById = jest.spyOn(ProductRepository.prototype, 'searchDiscountById').mockReturnValueOnce(productMug)
+
+    let amount = GetCheckoutAmount.Do(checkoutId)
+
+    expect(amount).toBe(1686)
+    checkoutsSearchByIdSpy.mockRestore()
+    productSearch2x1PromotionById.mockRestore()
+    productSearchDiscountById.mockRestore()
+  })
+
+  it('Checkout amount without discount when checkout contains less than 3 of the same product with discount', async () => {
+    let productMug = new Product('MUG', 'Mug', 750)
+    let checkoutId = '1234'
+
+    let mockCheckout = new Checkout(checkoutId, [productMug, productMug])
+    let checkoutsSearchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout)
+    let productSearch2x1PromotionById = jest.spyOn(ProductRepository.prototype, 'search2x1PromotionById').mockReturnValueOnce(null)
+    let productSearchDiscountById = jest.spyOn(ProductRepository.prototype, 'searchDiscountById').mockReturnValueOnce(productMug)
+
+    let amount = GetCheckoutAmount.Do(checkoutId)
+
+    expect(amount).toBe(1500)
+    checkoutsSearchByIdSpy.mockRestore()
+    productSearch2x1PromotionById.mockRestore()
+    productSearchDiscountById.mockRestore()
+  })
+
+  it('Checkout amount without discount when checkout contains 3 of the same product without discount', async () => {
+    let productMug = new Product('MUG', 'Mug', 750)
+    let checkoutId = '1234'
+
+    let mockCheckout = new Checkout(checkoutId, [productMug, productMug, productMug])
+    let checkoutsSearchByIdSpy = jest.spyOn(CheckoutRepository.prototype, 'searchById').mockReturnValueOnce(mockCheckout)
+    let productSearch2x1PromotionById = jest.spyOn(ProductRepository.prototype, 'search2x1PromotionById').mockReturnValueOnce(null)
+    let productSearchDiscountById = jest.spyOn(ProductRepository.prototype, 'searchDiscountById').mockReturnValueOnce(null)
+
+    let amount = GetCheckoutAmount.Do(checkoutId)
+
+    expect(amount).toBe(2250)
+    checkoutsSearchByIdSpy.mockRestore()
+    productSearch2x1PromotionById.mockRestore()
+    productSearchDiscountById.mockRestore()
   })
 })
