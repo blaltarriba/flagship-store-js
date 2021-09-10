@@ -3,7 +3,7 @@ var { ProductNotFoundError } = require('../exceptions/products.exceptions')
 
 function Do(productId) {
   let productRepository = new ProductRepository()
-  let product = productRepository.searchById(productRepository)
+  let product = productRepository.searchById(productId)
   if (product == null) {
     throw new ProductNotFoundError(productId)
   }
