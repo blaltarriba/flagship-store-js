@@ -1,6 +1,6 @@
 const express = require('express')
 let logger = require('morgan')
-let products = require('./controllers/product')
+let products = require('./controllers/products')
 let checkouts = require('./controllers/checkouts')
 
 const app = express()
@@ -14,8 +14,7 @@ app.get("/", (req, res) => {
   res.send('Welcome to Flagship store API v1')
 })
 
-app.get('/product', products.getAll)
-app.post('/products', products.create)
+app.get('/products', products.getAll)
 
 app.post('/checkouts', checkouts.create)
 app.patch('/checkouts/:x', checkouts.addProduct)
