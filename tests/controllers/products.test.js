@@ -31,4 +31,28 @@ describe('Products endpoint', () => {
       getAll.mockRestore()
     })
   })
+
+  describe('GET product by id', () => {
+    it('should return product', async () => {
+      let productPen = new Product('PEN', 'Pencil', 500)
+
+      let searchById = jest.spyOn(ProductRepository.prototype, 'searchById').mockReturnValueOnce(productPen)
+
+      let response = await request(app).get('/products/PEN')
+
+      expect(response.status).toBe(200)
+      expect(response.body).toHaveProperty('product', productPen)
+      searchById.mockRestore()
+    })
+
+    it('failed when product does not exist', async () => {
+      let productCode = 'FAKE'
+      let expectBody = `Product ${productCode} not found`
+
+      let response = await request(app).get(`/products/${productCode}`)
+
+      expect(response.status).toBe(404)
+      expect(response.body).toHaveProperty('message', expectBody)
+    })
+  })
 })

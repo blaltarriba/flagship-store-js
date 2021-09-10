@@ -1,13 +1,13 @@
 class ProductNotFoundError extends Error {
-  constructor(message) {
-    super(message)
+  constructor(productId) {
+    super("Product " + productId + " not found")
     this.name = "ProductNotFoundError"
   }
 }
 
 class CheckoutNotFoundError extends Error {
-  constructor(message) {
-    super(message)
+  constructor(checkoutId) {
+    super("Checkout " + checkoutId + " not found")
     this.name = "CheckoutNotFoundError"
   }
 }

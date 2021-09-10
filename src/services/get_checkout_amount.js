@@ -6,7 +6,7 @@ function Do(checkoutId) {
   let checkoutRepository = new CheckoutRepository()
   let checkout = checkoutRepository.searchById(checkoutId)
   if (checkout == null) {
-    throw new CheckoutNotFoundError("Checkout " + checkoutId + " not found")
+    throw new CheckoutNotFoundError(checkoutId)
   }
 
   let productRepository = new ProductRepository()
