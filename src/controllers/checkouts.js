@@ -30,12 +30,12 @@ function addProduct(request, response) {
     if (err instanceof ProductNotFoundError) {
       return response.status(422).json(
         {
-          message: `Product ${product} not found`
+          message: err.message
         })
     } else if (err instanceof CheckoutNotFoundError) {
       return response.status(404).json(
         {
-          message: `Checkout ${checkoutId} not found`
+          message: err.message
         })
     } else {
       throw err

@@ -15,6 +15,7 @@ app.get("/", (req, res) => {
 })
 
 app.get('/products', products.getAll)
+app.get('/products/:x', products.getById)
 
 app.post('/checkouts', checkouts.create)
 app.patch('/checkouts/:x', checkouts.addProduct)
